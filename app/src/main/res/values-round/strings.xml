@@ -1,0 +1,4 @@
+<resources>
+    <string name="hello_world">Hello Round World!</string>
+    <string name="menu_item_icon">cryptocurrency icon</string>
+</resources>
