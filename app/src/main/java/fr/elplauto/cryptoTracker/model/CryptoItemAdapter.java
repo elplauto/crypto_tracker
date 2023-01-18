@@ -18,14 +18,14 @@ import java.util.List;
 
 public class CryptoItemAdapter extends RecyclerView.Adapter<CryptoItemAdapter.RecyclerViewHolder> {
 
-    private List<CryptoItem> dataSource;
+    private final List<CryptoItem> dataSource;
 
     public interface AdapterCallback {
         void onItemClicked(Integer menuPosition);
     }
 
-    private AdapterCallback callback;
-    private Context context;
+    private final AdapterCallback callback;
+    private final Context context;
 
 
     public CryptoItemAdapter(Context context, List<CryptoItem> dataSource, AdapterCallback callback) {
@@ -45,20 +45,16 @@ public class CryptoItemAdapter extends RecyclerView.Adapter<CryptoItemAdapter.Re
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
         LinearLayout itemContainer;
         TextView itemName;
-        TextView itemShortName;
         TextView itemPrice;
         ImageView itemIcon;
-        ImageView itemTrendArrow;
         TextView itemChangePercent;
 
         public RecyclerViewHolder(View view) {
             super(view);
             itemContainer = view.findViewById(R.id.crypto_item_container);
             itemName = view.findViewById(R.id.crypto_item_name);
-            itemShortName = view.findViewById(R.id.crypto_item_shortname);
             itemIcon = view.findViewById(R.id.crypto_item_icon);
             itemPrice = view.findViewById(R.id.crypto_item_price);
-            itemTrendArrow = view.findViewById(R.id.crypto_item_trend_arrow);
             itemChangePercent = view.findViewById(R.id.crypto_item_change_percent);
         }
     }
@@ -75,9 +71,14 @@ public class CryptoItemAdapter extends RecyclerView.Adapter<CryptoItemAdapter.Re
             symbol = cryptoItem.getSymbol().toLowerCase().replace("eur", "");
         }
         holder.itemName.setText(symbol.toUpperCase());
-        holder.itemShortName.setText(symbol.toUpperCase());
-        holder.itemTrendArrow.setImageResource(R.drawable.up_arrow);
-        holder.itemChangePercent.setText(PriceFormatter.formatPercentage(cryptoItem.getPriceChangePercent()));
+        String priceChangePercent = PriceFormatter.formatPercentage(cryptoItem.getPriceChangePercent());
+        if (cryptoItem.getPriceChangePercent() > 0) {
+            priceChangePercent = "+" + priceChangePercent;
+            holder.itemChangePercent.setBackground(context.getDrawable(R.drawable.green_percentage_change_bg));
+        } else {
+            holder.itemChangePercent.setBackground(context.getDrawable(R.drawable.red_percentage_change_bg));
+        }
+        holder.itemChangePercent.setText(priceChangePercent);
         holder.itemIcon.setImageResource(context.getResources().getIdentifier("icon_" + symbol , "drawable", context.getPackageName()));
         holder.itemContainer.setOnClickListener(v -> {
             if (callback != null) {

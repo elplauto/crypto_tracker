@@ -6,14 +6,13 @@ import android.os.Bundle;
 import androidx.wear.widget.WearableLinearLayoutManager;
 import androidx.wear.widget.WearableRecyclerView;
 
+import java.util.Arrays;
+import java.util.List;
+
 import fr.elplauto.cryptoTracker.databinding.ActivityMainBinding;
 import fr.elplauto.cryptoTracker.model.CryptoItem;
 import fr.elplauto.cryptoTracker.model.CryptoItemAdapter;
 import fr.elplauto.cryptoTracker.services.BinanceService;
-
-import java.util.Arrays;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,7 +35,7 @@ public class MainActivity extends Activity {
         mRecyclerView.setEdgeItemsCenteringEnabled(true);
         mRecyclerView.setLayoutManager(new WearableLinearLayoutManager(this));
 
-        this.get24hrTickerPriceChangeStatistics();
+        MainActivity.this.get24hrTickerPriceChangeStatistics();
     }
 
     private void get24hrTickerPriceChangeStatistics() {
@@ -45,7 +44,7 @@ public class MainActivity extends Activity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        List<String> symbols = Arrays.asList("BTCUSDT", "ETHUSDT", "BNBUSDT");
+        List<String> symbols = Arrays.asList("BTCUSDT", "ETHUSDT", "BNBUSDT", "ADAUSDT", "SOLUSDT", "AVAXUSDT");
         String symbolsParam = this.getSymbolsParamFormatted(symbols);
 
         BinanceService service = retrofit.create(BinanceService.class);
